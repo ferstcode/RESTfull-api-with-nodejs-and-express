@@ -54,3 +54,5 @@ db.books.insert([
         read: false
     },
 ]);
+
+// mongo bookAPI < booksJson.js        se importo a bookAPI los datos del archivo booksJAson.js
