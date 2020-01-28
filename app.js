@@ -14,7 +14,17 @@ const Book = require('./models/bookModel');
 
 bookRouter.route('/books')
   .get((req, res) => {
-    Book.find((err, books) => {
+    const query = {};
+    if(req.query.genre){
+      query.genre = req.query.genre;
+    }
+    if(req.query.author){
+      query.author = req.query.author;
+    }
+    if(req.query.title){
+      query.title = req.query.title
+    }
+    Book.find(query,(err, books) => {
       if(err){
         res.send(err);
       } else {
@@ -22,6 +32,7 @@ bookRouter.route('/books')
       }      
     });
   });
+  
 app.use('/api', bookRouter);          
 
 app.get('/', (req, res) => {
