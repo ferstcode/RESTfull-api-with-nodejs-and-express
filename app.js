@@ -4,6 +4,8 @@ const mongoose = require('mongoose');  //paquete para no tratar de manera direct
 
 const app = express();
 
+const bodyParser = require('body-parser');  // paquete para analizar body de request
+
 const db = mongoose.connect('mongodb://localhost/bookAPI');  // nos dara una coneccion de bd a mongodb
 
 const bookRouter = express.Router();  //.Router= clase para crear manejadores de rutas
@@ -12,7 +14,15 @@ const port = process.env.PORT || 3000;
 
 const Book = require('./models/bookModel');
 
+app.use(bodyParser.urlencoded({extended: true})); // configuracion para que el analizador funcione bodyParser
+app.use(bodyParser.json());   // saca el body del post y lo entrega como json en req.body
+
 bookRouter.route('/books')
+  .post((req, res) => {
+    const book = new Book(req.body);
+    book.save();
+    res.status(201).json(book);
+  })
   .get((req, res) => {
     const query = {};
     if(req.query.genre){
